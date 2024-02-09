@@ -1,0 +1,52 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int      @id @default(autoincrement())
+  email    String   @unique
+  name     String?
+  checking Checking?
+  saving   Saving?
+}
+
+model Checking {
+  id       Int  @id @default(autoincrement())
+  fund     Int
+  user     User @relation(fields: [userId], references: [id])
+  userId   Int  @unique
+  paid     Transaction[] @relation("chekingOrigin")
+  received Transaction[] @relation("chekingDestiny")
+}
+
+model Saving {
+  id     Int  @id @default(autoincrement())
+  fund   Int
+  user   User @relation(fields: [userId], references: [id])
+  userId Int  @unique
+  paid     Transaction[] @relation("savingOrigin")
+  received Transaction[] @relation("savingDestiny")
+}
+
+model Transaction {
+  id                Int  @id @default(autoincrement())
+  value             Int
+  origin_type       String
+  destiny_type      String
+  checkingOrigin    Checking? @relation("chekingOrigin", fields: [checkingOriginId], references: [id])
+  checkingOriginId  Int?
+  checkingDestiny   Checking? @relation("chekingDestiny", fields: [checkingDestinyId], references: [id])
+  checkingDestinyId Int?
+  savingOrigin    Saving? @relation("savingOrigin", fields: [savingOriginId], references: [id])
+  savingOriginId  Int?
+  savingDestiny   Saving? @relation("savingDestiny", fields: [savingDestinyId], references: [id])
+  savingDestinyId Int?
+}
