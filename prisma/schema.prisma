@@ -28,10 +28,10 @@ model Checking {
 }
 
 model Saving {
-  id     Int  @id @default(autoincrement())
-  fund   Int
-  user   User @relation(fields: [userId], references: [id])
-  userId Int  @unique
+  id       Int  @id @default(autoincrement())
+  fund     Int
+  user     User @relation(fields: [userId], references: [id])
+  userId   Int  @unique
   paid     Transaction[] @relation("savingOrigin")
   received Transaction[] @relation("savingDestiny")
 }
@@ -45,8 +45,8 @@ model Transaction {
   checkingOriginId  Int?
   checkingDestiny   Checking? @relation("chekingDestiny", fields: [checkingDestinyId], references: [id])
   checkingDestinyId Int?
-  savingOrigin    Saving? @relation("savingOrigin", fields: [savingOriginId], references: [id])
-  savingOriginId  Int?
-  savingDestiny   Saving? @relation("savingDestiny", fields: [savingDestinyId], references: [id])
-  savingDestinyId Int?
+  savingOrigin      Saving? @relation("savingOrigin", fields: [savingOriginId], references: [id])
+  savingOriginId    Int?
+  savingDestiny     Saving? @relation("savingDestiny", fields: [savingDestinyId], references: [id])
+  savingDestinyId   Int?
 }
